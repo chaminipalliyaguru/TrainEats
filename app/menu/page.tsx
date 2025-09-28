@@ -1,8 +1,12 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, Clock, Plus } from "lucide-react"
 import { Header } from "@/components/header"
+import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase/client.js"
 
 const suggestedMeals = [
   {
@@ -56,6 +60,19 @@ const suggestedMeals = [
 ]
 
 export default function SuggestedMeals() {
+
+  const [meals, setMeals] = useState([])
+
+  useEffect(() => {
+    async function getMeals() {
+      const { data, error } = await supabase.from('meal').select('*')
+      if (error) console.error('Error fetching meals:', error)
+      else setMeals(data)
+    }
+    getMeals()
+  }, [])
+
+
   return (
     <>
       <Header />
@@ -71,14 +88,14 @@ export default function SuggestedMeals() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {suggestedMeals.map((meal, index) => (
+          {meals.map((meal, index) => (
             <Card
               key={index}
               className="group cursor-pointer hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               <div className="relative">
                 <img
-                  src={meal.image || "/placeholder.svg"}
+                  src={meal.img_url || "/placeholder.svg"}
                   alt={meal.name}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
