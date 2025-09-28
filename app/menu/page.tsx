@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, Clock, Plus } from "lucide-react"
 import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client.js"
 
@@ -130,7 +131,7 @@ export default function SuggestedMeals() {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">{meal.price}</span>
+                    <span className="font-bold text-lg">Rs. {meal.price}.00</span>
                     <span className="text-muted-foreground line-through text-sm">{meal.originalPrice}</span>
                   </div>
                   <Button size="sm">Add</Button>
@@ -141,6 +142,7 @@ export default function SuggestedMeals() {
         </div>
       </div>
     </section>
+    <Footer />
     </>
   )
 }
