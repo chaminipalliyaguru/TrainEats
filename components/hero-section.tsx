@@ -20,12 +20,12 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 relative">
                 <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input placeholder="Enter your train number or PNR" className="pl-10" />
+                <Input placeholder="Enter your meal" className="pl-10" />
               </div>
-              <div className="flex-1 relative">
+              {/* <div className="flex-1 relative">
                 <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input placeholder="Seat number (e.g., A1-25)" className="pl-10" />
-              </div>
+              </div> */}
               <Button size="lg" className="sm:w-auto w-full">
                 <Search className="h-5 w-5 mr-2" />
                 Find Meals

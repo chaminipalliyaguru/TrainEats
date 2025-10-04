@@ -31,7 +31,7 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#menu" className="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="/menu" className="text-muted-foreground hover:text-foreground transition-colors">
             Menu
           </a>
           <a href="#categories" className="text-muted-foreground hover:text-foreground transition-colors">
