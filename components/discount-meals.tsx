@@ -1,7 +1,11 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, Clock, Percent } from "lucide-react"
+import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase/client.js"
 
 const discountMeals = [
   {
@@ -43,6 +47,21 @@ const discountMeals = [
 ]
 
 export function DiscountMeals() {
+  const [meals, setMeals] = useState([]);
+
+  useEffect(() => {
+    const fetchMeals = async () => {
+      const { data, error } = await supabase.from("meal_discount").select("*");
+      if (error) {
+        console.error("Error fetching meals:", error);
+      } else {
+        setMeals(data);
+      }
+    };
+
+    fetchMeals();
+  }, []);
+
   return (
     <section id="offers" className="py-16 px-4">
       <div className="container mx-auto">
@@ -56,7 +75,7 @@ export function DiscountMeals() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {discountMeals.map((meal, index) => (
+          {meals.map((meal, index) => (
             <Card
               key={index}
               className="group cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden relative"
@@ -64,7 +83,7 @@ export function DiscountMeals() {
               <div className="absolute top-0 right-0 z-10">
                 <div className="bg-destructive text-destructive-foreground px-3 py-1 text-sm font-bold rounded-bl-lg flex items-center gap-1">
                   <Percent className="h-3 w-3" />
-                  {meal.discount}
+                  {meal.new_price}
                 </div>
               </div>
 
