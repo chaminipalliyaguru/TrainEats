@@ -7,55 +7,16 @@ import { Star, Clock, Percent } from "lucide-react"
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client.js"
 
-const discountMeals = [
-  {
-    name: "Rajma Chawal Combo",
-    description: "Homestyle rajma with steamed rice, pickle, and papad",
-    price: "₹149",
-    originalPrice: "₹199",
-    discount: "25% OFF",
-    rating: 4.4,
-    reviews: 420,
-    time: "30 min",
-    image: "/rajma-chawal-with-pickle.jpg",
-    vegetarian: true,
-  },
-  {
-    name: "Chicken Fried Rice",
-    description: "Wok-tossed rice with chicken, vegetables, and soy sauce",
-    price: "₹199",
-    originalPrice: "₹249",
-    discount: "20% OFF",
-    rating: 4.3,
-    reviews: 380,
-    time: "25 min",
-    image: "/chicken-fried-rice-with-vegetables.jpg",
-    vegetarian: false,
-  },
-  {
-    name: "Aloo Paratha Combo",
-    description: "Stuffed potato paratha with curd, pickle, and butter",
-    price: "₹129",
-    originalPrice: "₹169",
-    discount: "24% OFF",
-    rating: 4.2,
-    reviews: 290,
-    time: "20 min",
-    image: "/aloo-paratha-with-curd-and-pickle.jpg",
-    vegetarian: true,
-  },
-]
-
 export function DiscountMeals() {
-  const [meals, setMeals] = useState([]);
+  const [meal, setMeal] = useState([]);
 
   useEffect(() => {
     const fetchMeals = async () => {
-      const { data, error } = await supabase.from("meal_discount").select("*");
+      const { data, error } = await supabase.from("meal_discount").select(`id, meal_id, new_price, discount_percentage, meal( name, description, price, img_url, is_vegetarian )`);
       if (error) {
         console.error("Error fetching meals:", error);
       } else {
-        setMeals(data);
+        setMeal(data);
       }
     };
 
@@ -75,35 +36,34 @@ export function DiscountMeals() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {meals.map((meal, index) => (
+          {meal.map((meal, index) => (
             <Card
               key={index}
               className="group cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden relative"
             >
               <div className="absolute top-0 right-0 z-10">
                 <div className="bg-destructive text-destructive-foreground px-3 py-1 text-sm font-bold rounded-bl-lg flex items-center gap-1">
-                  <Percent className="h-3 w-3" />
-                  {meal.new_price}
+                  {meal.discount_percentage}% OFF
                 </div>
               </div>
 
               <div className="relative">
                 <img
-                  src={meal.image || "/placeholder.svg"}
-                  alt={meal.name}
+                  src={meal.meal.img_url || "/placeholder.svg"}
+                  alt={meal.meal.name}
                   className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <Badge
-                  variant={meal.vegetarian ? "secondary" : "outline"}
+                  variant={meal.meal.is_vegetarian ? "secondary" : "outline"}
                   className="absolute bottom-3 left-3 bg-background/90"
                 >
-                  {meal.vegetarian ? "🟢 Veg" : "🔴 Non-Veg"}
+                  {meal.meal.is_vegetarian ? "🟢 Veg" : "🔴 Non-Veg"}
                 </Badge>
               </div>
 
               <CardContent className="p-4">
-                <h3 className="font-semibold text-lg mb-2">{meal.name}</h3>
-                <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{meal.description}</p>
+                <h3 className="font-semibold text-lg mb-2">{meal.meal.name}</h3>
+                <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{meal.meal.description}</p>
 
                 <div className="flex items-center gap-2 mb-3">
                   <div className="flex items-center gap-1">
@@ -119,8 +79,8 @@ export function DiscountMeals() {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg text-primary">{meal.price}</span>
-                    <span className="text-muted-foreground line-through text-sm">{meal.originalPrice}</span>
+                    <span className="font-bold text-lg text-primary">Rs. {meal.new_price}</span>
+                    <span className="text-muted-foreground line-through text-sm">{meal.meal.price}</span>
                   </div>
                   <Button size="sm" variant="outline">
                     Order Now
