@@ -24,7 +24,7 @@ export function Header() {
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <a href="#" className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <Train className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold text-foreground">TrainEats</span>
           </a>
